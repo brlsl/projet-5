@@ -43,7 +43,7 @@ public abstract class TodocDatabase extends RoomDatabase {
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", 1);
-                contentValues.put("name", "Tartampion");
+                contentValues.put("name", "Projet Tartampion");
                 contentValues.put("color", 0xFFEADAD1);
 
                 db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
