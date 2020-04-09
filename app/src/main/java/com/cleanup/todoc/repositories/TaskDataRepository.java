@@ -1,7 +1,10 @@
 package com.cleanup.todoc.repositories;
 
+import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 
+import com.cleanup.todoc.database.TodocDatabase;
 import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Task;
 
@@ -10,17 +13,27 @@ import java.util.List;
 // repository objective is to isolate data source (DAO) from ViewModel
 public class TaskDataRepository {
 
-    private final TaskDao taskDao;
+    private TaskDao mTaskDao;
+    private LiveData<List<Task>> mAllTasks;
+    private LiveData<Task> mTaskId;
 
-    public TaskDataRepository (TaskDao taskDao){this.taskDao = taskDao;}
+    public TaskDataRepository (Application application){
+        TodocDatabase db = TodocDatabase.getInstance(application);
+        mTaskDao = db.taskDao();
+        mAllTasks = mTaskDao.getTasks();
+    }
 
+    public LiveData<List<Task>> getAllTasks() {return mAllTasks;}
 
-    public LiveData<List<Task>> getTask(long projectId){return this.taskDao.getTask(projectId);}
+    public void insertTask(Task task){
+        TodocDatabase.databaseWriteExecutor.execute(() -> {
+                mTaskDao.insertTask(task);
+        });
+    }
 
-    public void createTask(Task task){taskDao.insertTask(task);}
-
-    public void updateTask(Task task){taskDao.updateTask(task);}
-
-    public void deleteTask(long taskId){taskDao.deleteTask(taskId);}
-
+    public void deleteTask(Task task){
+        TodocDatabase.databaseWriteExecutor.execute(() -> {
+            mTaskDao.deleteTask(task);
+        });
+    }
 }

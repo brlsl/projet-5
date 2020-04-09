@@ -15,7 +15,8 @@ import java.util.Comparator;
  */
 
 // define as table for
-@Entity(foreignKeys = @ForeignKey(entity = Project.class,
+@Entity(tableName = "task_table",
+        foreignKeys = @ForeignKey(entity = Project.class,
         parentColumns = "id",
         childColumns = "projectId"))
 public class Task {

@@ -2,6 +2,7 @@ package com.cleanup.todoc.database.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -12,20 +13,20 @@ import java.util.List;
 
 @Dao
 public interface TaskDao {
-    // annotation permettant de définir la méthode comme une requête SQL
-    @Query("SELECT * FROM Task WHERE projectId = :projectId")
-    LiveData<List<Task>> getTask(long projectId);
+
+    // récupère liste de tâche
+    @Query("SELECT * FROM task_table")
+    LiveData<List<Task>> getTasks();
+
+    @Query("SELECT * FROM task_table WHERE id = :id")
+    LiveData<Task> getTaskId(long id);
 
     // annotation Insert permet de créer une nouvelle chose à faire de type task
     @Insert
     long insertTask(Task task);
 
-    // permet de mettre à jour une chose à faire existante grâce à l'annotation Update
-    @Update
-    int updateTask(Task task);
-
     // permet de supprimer une chose existante en BDD
-    @Query("DELETE FROM Task WHERE id = :taskId")
-    int deleteTask(long taskId);
+    @Delete
+    int deleteTask(Task task);
 
 }

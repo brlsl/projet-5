@@ -15,11 +15,23 @@ import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Database(entities = {Project.class, Task.class}, version = 1, exportSchema = false)
 public abstract class TodocDatabase extends RoomDatabase {
 
     // Singleton
     private static volatile TodocDatabase INSTANCE;
+
+    // DAO
+    public abstract ProjectDao projectDao();
+    public abstract TaskDao taskDao();
+
+    private static final int NUMBER_OF_THREADS = 4;
+    public static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+
     public static TodocDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (TodocDatabase.class) {
@@ -52,8 +64,6 @@ public abstract class TodocDatabase extends RoomDatabase {
         };
     }
 
-    // DAO
-    public abstract ProjectDao projectDao();
-    public abstract TaskDao taskDao();
+
 
 }
