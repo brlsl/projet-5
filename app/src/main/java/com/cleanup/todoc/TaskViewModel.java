@@ -1,9 +1,8 @@
 package com.cleanup.todoc;
 
-import android.app.Application;
-
-import androidx.lifecycle.AndroidViewModel;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
@@ -11,43 +10,53 @@ import com.cleanup.todoc.repositories.ProjectDataRepository;
 import com.cleanup.todoc.repositories.TaskDataRepository;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
-public class TaskViewModel extends AndroidViewModel {
+public class TaskViewModel extends ViewModel {
 
     // REPOSITORIES
-    private TaskDataRepository mTaskDataRepository;
-    private ProjectDataRepository mProjectDataRepository;
+    private final TaskDataRepository mTaskDataSource;
+    private final ProjectDataRepository mProjectDataSource;
+    private final Executor mExecutor;
 
-    private LiveData<List<Task>> mAllTasks;
+    // DATA
+    @Nullable
+    private LiveData<List<Project>> mProjectList;
 
-    public TaskViewModel(Application application) {
-        super(application);
-        mProjectDataRepository = new ProjectDataRepository(application);
-        mTaskDataRepository = new TaskDataRepository(application);
-        mAllTasks = mTaskDataRepository.getAllTasks();
+    public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
+        mTaskDataSource = taskDataSource;
+        mProjectDataSource = projectDataSource;
+        mExecutor = executor;
     }
-/*
-    public void init(long userId) {
-        if (this.currentProject != null) {
-            return;
+
+    public void init() {
+        if (mProjectList == null) {
+            mProjectList = mProjectDataSource.getAllProjects();
         }
-        currentProject = projectDataSource.getUser(userId);
     }
-*/
+
     // -------------
     // FOR PROJECT
     // -------------
 
-    public LiveData<Project> getProject() { return mProjectDataRepository.getProject();}
+    public LiveData<List<Project>> getAllProject() {return mProjectList;}
 
     // -------------
     // FOR TASK
     // -------------
 
-    public LiveData<List<Task>> getAllTasks() { return mAllTasks;}
+    public LiveData<List<Task>> getAllTasks() {
+        return mTaskDataSource.getAllTasks();
+    }
 
-    public void createTask(Task task) { mTaskDataRepository.insertTask(task);}
+    public void insertTask(Task task) {
+        mExecutor.execute(() ->
+            mTaskDataSource.insertTask(task));
+    }
 
-    public void deleteTask(Task task) {mTaskDataRepository.deleteTask(task);}
-
+    public void deleteTask(Task task) {
+        mExecutor.execute(() -> {
+            mTaskDataSource.deleteTask(task);
+        });
+    }
 }

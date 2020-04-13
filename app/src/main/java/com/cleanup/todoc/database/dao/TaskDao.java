@@ -23,10 +23,10 @@ public interface TaskDao {
 
     // annotation Insert permet de créer une nouvelle chose à faire de type task
     @Insert
-    long insertTask(Task task);
+    void insertTask(Task task);
 
     // permet de supprimer une chose existante en BDD
     @Delete
-    int deleteTask(Task task);
+    void deleteTask(Task task);
 
 }

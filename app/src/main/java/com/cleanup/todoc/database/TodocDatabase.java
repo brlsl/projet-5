@@ -15,9 +15,6 @@ import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Database(entities = {Project.class, Task.class}, version = 1, exportSchema = false)
 public abstract class TodocDatabase extends RoomDatabase {
 
@@ -28,9 +25,6 @@ public abstract class TodocDatabase extends RoomDatabase {
     public abstract ProjectDao projectDao();
     public abstract TaskDao taskDao();
 
-    private static final int NUMBER_OF_THREADS = 4;
-    public static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public static TodocDatabase getInstance(Context context) {
         if (INSTANCE == null) {
@@ -53,17 +47,19 @@ public abstract class TodocDatabase extends RoomDatabase {
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("id", 1);
-                contentValues.put("name", "Projet Tartampion");
-                contentValues.put("color", 0xFFEADAD1);
+                Project[] projects = Project.getAllProjects();
 
-                db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
+                for (int i = 0; i < projects.length; i++) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("id", projects[i].getId());
+                    contentValues.put("name", projects[i].getName());
+                    contentValues.put("color", projects[i].getColor());
+                    db.insert("project_table", OnConflictStrategy.IGNORE, contentValues);
+                }
             }
 
         };
     }
-
 
 
 }
