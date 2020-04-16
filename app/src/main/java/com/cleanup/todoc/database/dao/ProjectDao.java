@@ -13,6 +13,7 @@ import java.util.List;
 @Dao
 public interface ProjectDao {
 
+    // insert a project for instrumented test
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertProject(Project project);
 

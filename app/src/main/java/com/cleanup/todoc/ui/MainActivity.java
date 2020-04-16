@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         //observe database changes automatically
         mTaskViewModel.getAllTasks().observe(this, this::updateTasks);
 
+
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,11 +184,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             // If both project and name of the task have been set
             else if (taskProject != null) {
                 // TODO: Replace this by id of persisted task
-                long id = (long) (Math.random() * 50000);
+                //long id = (long) (Math.random() * 50000);
 
 
                 Task task = new Task(
-                        id,
                         taskProject.getId(),
                         taskName,
                         new Date().getTime()
@@ -258,6 +258,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
             }
             adapter.updateTasks(tasks);
+
+            for (int i = 0; i < tasks.size() ; i++) {
+                System.out.println("coucou" + tasks.get(i).getId());
+            }
+
         }
     }
 

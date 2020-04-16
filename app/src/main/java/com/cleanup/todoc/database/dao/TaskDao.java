@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import com.cleanup.todoc.model.Task;
 
@@ -17,9 +16,6 @@ public interface TaskDao {
     // récupère liste de tâche
     @Query("SELECT * FROM task_table")
     LiveData<List<Task>> getTasks();
-
-    @Query("SELECT * FROM task_table WHERE id = :id")
-    LiveData<Task> getTaskId(long id);
 
     // annotation Insert permet de créer une nouvelle chose à faire de type task
     @Insert
