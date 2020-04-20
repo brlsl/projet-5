@@ -19,14 +19,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.TaskViewModel;
 import com.cleanup.todoc.injections.Injection;
 import com.cleanup.todoc.injections.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +36,7 @@ import java.util.List;
  * @author Gaëtan HERFRAY
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
-    TaskViewModel mTaskViewModel;
+    private TaskViewModel mTaskViewModel;
 
     /**
      * List of all projects available in the application
@@ -183,9 +181,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             }
             // If both project and name of the task have been set
             else if (taskProject != null) {
-                // TODO: Replace this by id of persisted task
-                //long id = (long) (Math.random() * 50000);
-
 
                 Task task = new Task(
                         taskProject.getId(),

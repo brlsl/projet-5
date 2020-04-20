@@ -163,7 +163,7 @@ public class Task {
         }
     }
 
-    //add getters
+    //add getters for DAO
     public long getProjectId() {
         return projectId;
     }

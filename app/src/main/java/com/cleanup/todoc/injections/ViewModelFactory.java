@@ -3,7 +3,7 @@ package com.cleanup.todoc.injections;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cleanup.todoc.TaskViewModel;
+import com.cleanup.todoc.ui.TaskViewModel;
 import com.cleanup.todoc.repositories.ProjectDataRepository;
 import com.cleanup.todoc.repositories.TaskDataRepository;
 

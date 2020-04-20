@@ -73,7 +73,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     /**
      * Listener for deleting tasks
      */
-    public interface DeleteTaskListener {
+    public interface DeleteTaskListener     {
         /**
          * Called when a task needs to be deleted.
          *

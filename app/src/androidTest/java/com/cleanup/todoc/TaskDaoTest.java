@@ -57,7 +57,6 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndGetTask() throws InterruptedException {
-
         // Add projects and tasks
         this.database.projectDao().insertProject(this.projects[0]);
         this.database.projectDao().insertProject(this.projects[1]);
@@ -74,6 +73,7 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndDeleteTask() throws InterruptedException {
+        // Add projects and tasks in DataBase
         this.database.projectDao().insertProject(this.projects[0]);
         this.database.projectDao().insertProject(this.projects[1]);
         this.database.projectDao().insertProject(this.projects[2]);
@@ -81,16 +81,18 @@ public class TaskDaoTest {
         this.database.taskDao().insertTask(task2);
         this.database.taskDao().insertTask(task3);
 
-
         List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTasks());
         assertEquals(3, tasks.size());
-
 
         this.database.taskDao().deleteTask(tasks.get(0));
         this.database.taskDao().deleteTask(tasks.get(1));
 
         tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTasks());
+        assertEquals(projects[2].getId(),tasks.get(0).getProjectId());
         assertEquals("task3", tasks.get(0).getName());
+        assertEquals(789, tasks.get(0).getCreationTimestamp());
+
+        assertEquals(1, tasks.size());
 
     }
 }

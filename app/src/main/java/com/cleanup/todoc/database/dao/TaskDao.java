@@ -13,15 +13,12 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
-    // récupère liste de tâche
     @Query("SELECT * FROM task_table")
     LiveData<List<Task>> getTasks();
 
-    // annotation Insert permet de créer une nouvelle chose à faire de type task
     @Insert
     void insertTask(Task task);
 
-    // permet de supprimer une chose existante en BDD
     @Delete
     void deleteTask(Task task);
 
