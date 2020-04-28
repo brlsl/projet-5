@@ -253,11 +253,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
             }
             adapter.updateTasks(tasks);
-
-            for (int i = 0; i < tasks.size() ; i++) {
-                System.out.println("coucou" + tasks.get(i).getId());
-            }
-
         }
     }
 
